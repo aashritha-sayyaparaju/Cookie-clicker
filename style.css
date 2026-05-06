@@ -27,7 +27,7 @@ body {
 }
 
 #topbar {
-    background: var(--pink)
+    background: var(--pink);
     padding: 14px 32px;
     display: flex;
     align-items: baseline;
@@ -45,7 +45,7 @@ body {
     letter-spacing: -0.5px;
 }
 
-#per-sec-disply {
+#per-sec-display {
     font-size: 0.9rem;
     color: var(--soft-brown);
 }
