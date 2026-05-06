@@ -124,3 +124,55 @@ setInterval(() => {
     checkMilestones();
 }, 1000);
 
+function updateDisplay() {
+    pearlCountEl.textContent = `${fmt(Math.floor(state.pearls))}🧋`;
+    perSecEl.textContent = `${fmt(state.perSecond)}pearls/sec`;
+    statTotal.textContent = fmt(Math.floor(state.totalPearls));
+    statClicks.textContent = fmt(state.totalClicks);
+    statPerClick.textContent = state.perClick;
+    statPerSec.textContent = state.perSecond;
+    renderUpgrades();
+}
+
+
+function fmt(n) {
+    if (n >= 1_000_000) return (n / 1_000_000).toFixed(1) + "m";
+    if (n >= 1_000) return (n / 1_000).toFixed(1) + "k";
+    return n.toString();
+}
+
+
+function buildUpgradeCards() {
+    upgradesListEl.innerHTML = "";
+    state.upgrades.forEach((u) => {
+        const card = document.createElement("div");
+        card.className = "upgrade-card unaffordable";
+        card.dataset.id = u.id;
+        card.innerHTML = `
+        <div class="upgrade-name">${u.name}</div>
+        <div class="upgrade-name">${u.desc}</div>
+        <div class="upgrade-footer">
+            <span class="upgrade-cost"🧋<span class="cost-val">${fmt(u.cost)}</span></span>
+            <span class="upgrade-owned">owned: <span class="owned-val">${u.owned}</span></span>
+            </div>
+            `;
+
+            card.addEventListener("click", () => buyUpgrade(u.id));
+            upgradesListEl.appendChild(card);
+    });
+}
+
+
+function renderUpgrades() {
+    state.upgrades.forEach((u) => {
+        const card = upgradesListEl.querySelector(`[data-id="${u.id}"]`);
+        if (!card) return;
+        card.querySelector(".cost-val").textContent = fmt(u.cost);
+        card.querySelector(".owned-val").textContent = u.owned;
+
+        const canAfford = state.pearls >= u.cost;
+        card.classList.toggle("unaffordable", !canAfford);
+        card.classList.toggle("affordable", canAfford);
+    });
+}
+
