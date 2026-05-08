@@ -19,7 +19,7 @@ const state = {
             id: 1,
             name: "tapioca scoop",
             desc: "+1 pearl per second",
-            baseCost: 50;
+            baseCost: 50,
             cost: 50,
             owned: 0,
             effect: "passive",
@@ -91,9 +91,9 @@ const milestoneListEl = document.getElementById("milestone-list");
 
 
 
-bobeEl.addEventListener("click", (e) => {
+bobaEl.addEventListener("click", (e) => {
     state.pearls += state.perClick;
-    state.totalPeals += state.perClick;
+    state.totalPearls += state.perClick;
     state.totalClicks++;
 
     bobaEl.classList.remove("clicked");
@@ -126,7 +126,7 @@ setInterval(() => {
 
 function updateDisplay() {
     pearlCountEl.textContent = `${fmt(Math.floor(state.pearls))}🧋`;
-    perSecEl.textContent = `${fmt(state.perSecond)}pearls/sec`;
+    perSecEl.textContent = `${fmt(state.perSecond)} pearls/sec`;
     statTotal.textContent = fmt(Math.floor(state.totalPearls));
     statClicks.textContent = fmt(state.totalClicks);
     statPerClick.textContent = state.perClick;
@@ -150,7 +150,7 @@ function buildUpgradeCards() {
         card.dataset.id = u.id;
         card.innerHTML = `
         <div class="upgrade-name">${u.name}</div>
-        <div class="upgrade-name">${u.desc}</div>
+        <div class="upgrade-desc">${u.desc}</div>
         <div class="upgrade-footer">
             <span class="upgrade-cost"🧋<span class="cost-val">${fmt(u.cost)}</span></span>
             <span class="upgrade-owned">owned: <span class="owned-val">${u.owned}</span></span>
@@ -205,8 +205,14 @@ function checkMilestones() {
     MILESTONES.forEach((m) => {
         if(state.totalPearls >= m.threshold && !reached.has(m.threshold)) {
             reached.add(m.threshold);
-            const el = document.createElemenet("div");
+            const el = document.createElement("div");
+            el.className = "milestone";
+            el.textContent = m.label;
+            milestoneListEl.prepend(el);
         }
-    })
+    });
 }
+
+buildUpgradeCards();
+updateDisplay();
 
