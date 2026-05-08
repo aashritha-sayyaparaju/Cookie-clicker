@@ -176,3 +176,37 @@ function renderUpgrades() {
     });
 }
 
+function buyUpgrade(id) {
+    const u = state.upgrades[id];
+    if (state.pearls < u.cost) return;
+
+    state.pearls -= u.cost;
+    u.owned++;
+    u.cost = Math.ceil(u.baseCost * Math.pow(1.15, u.owned));
+
+    recalcStats();
+    updateDisplay();
+}
+
+
+function recalcStats() {
+    state.perClick = 1;
+    state.perSecond = 0;
+
+    state.upgrades.forEach((u) => {
+        if (u.owned === 0) return;
+        if (u.effect === "click") state.perClick += u.value * u.owned;
+        if (u.effect === "passive") state.perSecond += u.value * u.owned;
+    });
+}
+
+
+function checkMilestones() {
+    MILESTONES.forEach((m) => {
+        if(state.totalPearls >= m.threshold && !reached.has(m.threshold)) {
+            reached.add(m.threshold);
+            const el = document.createElemenet("div");
+        }
+    })
+}
+
