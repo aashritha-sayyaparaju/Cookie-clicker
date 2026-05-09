@@ -103,6 +103,7 @@ bobaEl.addEventListener("click", (e) => {
 
     spawnFloater(e.clientX, e.clientY, state.perClick);
     updateDisplay();
+    checkMilestones();
 });
 
 function spawnFloater(x,y,amount) {
@@ -152,7 +153,7 @@ function buildUpgradeCards() {
         <div class="upgrade-name">${u.name}</div>
         <div class="upgrade-desc">${u.desc}</div>
         <div class="upgrade-footer">
-            <span class="upgrade-cost"🧋<span class="cost-val">${fmt(u.cost)}</span></span>
+            <span class="upgrade-cost">🧋<span class="cost-val">${fmt(u.cost)}</span></span>
             <span class="upgrade-owned">owned: <span class="owned-val">${u.owned}</span></span>
             </div>
             `;
